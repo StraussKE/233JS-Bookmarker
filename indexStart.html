@@ -38,16 +38,16 @@
             <div class="col-md-2 col-xs-2 col-lg-2 col-sm-2"></div>
 
             <div class="col-md-8 col-xs-8 col-lg-8 col-sm-8">
+                <h2>Bookmarker</h2>
+
                 <div class="floater content">
-                    <form class="bookmark-form">
-                        <div class="floater-top">
-                            <input id="url" type="text" class="form-control">
-                            <input id="description" type="text" class="form-control">
-                        </div>
-                        <div class="floater-bottom">
-                            <button type="submit" class="btn btn-primary btn-sm">Add</button>
-                        </div>
-                    </form>
+                    <div class="form-group floater-top">
+                        <input type="text" placeholder="Bookmark URL" class="form-control" id="link" />
+                        <input type="text" placeholder="Bookmark Description" class="form-control" id="description" />
+                    </div>
+                    <div class="form-group floater-bottom">
+                        <button class="btn btn-primary" id="addBtn">Add</button>
+                    </div>
                 </div>
 
                 <div class="bookmarks-list content">
@@ -62,7 +62,7 @@
                                         &bull; Placeholder Bookmark
                                     </div>
                                     <div class="row bookmark-descript">
-                                            &bull; Descriptive Text Goes Here
+                                        &bull; Descriptive Text Goes Here
                                     </div>
                                 </div>
                                 <div class="col-md-1 col-xs-1 col-lg-1 col-sm-1 delete-icon-area">
@@ -73,7 +73,7 @@
                     </ul>
                 </div>
             </div>
-
+            <div class="col-md-2 col-xs-2 col-lg-2 col-sm-2"></div>
         </div>
     </div>
                 <script src="src/index.js"></script>

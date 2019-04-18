@@ -58,8 +58,13 @@ class Bookmarker {
                 },
             ]
         }
+        this.fillBookmarksList = this.fillBookmarksList.bind(this, bookmarks)
+        document.getElementById('link').onclick = overlayOn();
+        document.getElementById('description').onclick = overlayOn();
+        document.getElementById('addBtn').onclick = this.overlayOff.bind(this);
 
         this.fillBookmarksList(this.bookmarks);
+        
     }
     /*
 
@@ -74,7 +79,24 @@ class Bookmarker {
     */
     generateBookmarkHtml(bookmark, index) {
         return `
-            <p> need to write the html for this still
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-md-2 col-xs-2 col-lg-2 col-sm-2 bookmark-img">
+                        <img src="images/bookmark.png" class="img-thumbnail" alt="Bookmark Image" />
+                </div>
+                <div class="col-md-9 col-xs-9 col-lg-9 col-sm-9">
+                    <div class="row bookmark-url">
+                        &bull; ${bookmark.link}
+                    </div>
+                    <div class="row bookmark-descript">
+                        &bull; ${bookmark.description}
+                    </div>
+                </div>
+                    <div class="col-md-1 col-xs-1 col-lg-1 col-sm-1 delete-icon-area">
+                        <a class="" href="/" onclick="bookmarkIt.deleteBookmark(event, ${index})"><i class="delete-icon glyphicon glyphicon-trash"></i></a>
+                    </div>
+                </div>
+            </li>
         `;
     }
     /*
@@ -92,17 +114,14 @@ class Bookmarker {
     */
 
     fillBookmarksList(bookmarks) {
-        let bookmarkHtml = this.bookmarks.reduce(
-            (html, bookmark, index) => html += this.generateHtml(bookmark, index),
-            '');
+        let bookmarksHtml = this.bookmarks.reduce(
+            (html, bookmark, index) => html += this.generateBookmarkHtml(bookmark, index), '');
+        document.getElementById('bookmarkList').innerHTML = bookmarksHtml;
     }
 
     // END OF PART 1 - TEST AND DEBUG YOUR CODE - YOU SHOULD SEE HARDCODED BOOKMARKS YOUR ON PAGE
-    
-}
-/*
-    
 
+    /*
     PART 2 - Delete a bookmark
     -   Add the deleteBookmark method.  It has 2 parameters, event and index
         -   prevent the default action of the anchor tag using the event parameter
@@ -112,12 +131,32 @@ class Bookmarker {
         The handler should call the deleteBookmark method with event 
         and index (template string) as its parameters
     END OF PART 2 - TEST AND DEBUG YOUR CODE
-*/
-    deleteTask(event, index) {
+    */
+    deleteBookmark(event, index) {
         event.preventDefault();
         this.bookmarks.splice(index, 1);
-        this.loadTasks();
+        this.fillBookmarksList(this.bookmarks);
     }
+
+
+
+
+    /*
+        EXTRA CREDIT:
+        -   Do something on the page to draw attention to the form when you enter and leave
+            the form.  See my screen shot and the styles in the css file to an idea.
+    */
+
+    overlayOn() {
+        document.getElementById("overlay").style.display = "block";
+        document.write('I executed!');
+    }
+
+    overlayOff() {
+        document.getElementById("overlay").style.display = "none";
+    }
+}
+
 /*
 
     PART 3 - Add a bookmark
@@ -135,9 +174,7 @@ class Bookmarker {
         when the submit handler is called if you don't.
     END OF PART 3 - TEST AND DEBUG YOUR CODE
 
-    EXTRA CREDIT: 
-    -   Do something on the page to draw attention to the form when you enter and leave 
-        the form.  See my screen shot and the styles in the css file to an idea.
+    
 
 */
 
@@ -147,3 +184,5 @@ class Bookmarker {
     Use and arrow or anonymous function
 */
 
+let bookmarkIt;
+window.onload = () => { bookmarkIt = new Bookmarker() };
