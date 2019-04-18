@@ -59,6 +59,6 @@ body.show-floater .overlay {
     font-size: 14px;
 }
 
-.has-error input[type=text] {
+.has-error-url input[type=text], .has-error-desc input[type=text] {
     background-color: #FFCCCC;
 }

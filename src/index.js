@@ -168,7 +168,8 @@ class Bookmarker {
     */
 
     fillBookmarksList(bookmarks) {
-        let bookmarksHtml = bookmarks.reduce(
+        localStorage['bookmarks'] = JSON.stringify(bookmarks);
+        let bookmarksHtml = this.bookmarks.reduce(
             (html, bookmark, index) => html += this.generateBookmarkHtml(bookmark, index), '');
         document.getElementById('bookmarkList').innerHTML = bookmarksHtml;
     }
@@ -211,10 +212,10 @@ class Bookmarker {
     addBookmark(event) {
         event.preventDefault();
         let submittedUrl = document.getElementById('url');                  // create a variable to point to the url HTML element
-        let link = submittedUrl.value;                               // create a variable containing the text from url so that newBookmark can be created
+        let link = submittedUrl.value;                                      // create a variable containing the text from url so that newBookmark can be created
         let title = link;
         let submittedDescript = document.getElementById('description');     // create a variable to point to the description HTML element
-        let description = submittedDescript.value;                     // create a variable containing the text from description so that newBookmark can be created
+        let description = submittedDescript.value;                          // create a variable containing the text from description so that newBookmark can be created
 
         let newBookmark = {
             description,
@@ -223,12 +224,25 @@ class Bookmarker {
             title
         };
 
-        let parentDiv = document.getElementById('url').parentElement;       //creates variable to point to the HTML parent element
+        let linkParentDiv = document.getElementById('url').parentElement;   // creates variable to point to the HTML parent element
+        let descParentDiv = document.getElementById('description').parentElement;
 
-        if (description == '' || link == '')
-            parentDiv.classList.add('has-error');
-        else { 
-            parentDiv.classList.remove('has-error');                        // removes error class
+        if (link == '') {                                                   // if link is empty  
+            linkParentDiv.classList.add('has-error-url');                   // throw error flag
+            if (description == '') {                                        // test if description is also empty
+                descParentDiv.classList.add('has-error-desc');              // if empty, throw second error flag
+            }
+            else {                                                          // otherwise clear any previously thrown error flag on description
+                descParentDiv.classList.remove('has-error-desc');
+            }
+        } else if (description == '') {                                     // test description if link wasn't empty, treat appropriately
+            descParentDiv.classList.add('has-error-desc');
+            linkParentDiv.classList.remove('has-error-url');                // make sure link has no error flag since it passed its test
+            console.log('I executed');
+        } else { 
+            descParentDiv.classList.remove('has-error-desc');               // remove description error flag
+            linkParentDiv.classList.remove('has-error-url');                // remove link error flag
+
             this.bookmarks.push(newBookmark);                               // pushes the bookmark into the bookmarks list
             submittedUrl.value = '';                                        // clears the url text box for future task adding
             submittedDescript.value = '';                                   // clears the description text box for future task adding
