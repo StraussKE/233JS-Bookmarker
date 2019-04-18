@@ -58,11 +58,9 @@ class Bookmarker {
                 },
             ]
         }
-        this.fillBookmarksList = this.fillBookmarksList.bind(this, bookmarks)
-        document.getElementById('link').onclick = overlayOn();
-        document.getElementById('description').onclick = overlayOn();
-        document.getElementById('addBtn').onclick = this.overlayOff.bind(this);
 
+
+        document.getElementById('submit').onsubmit = this.addBookmark.bind(this);
         this.fillBookmarksList(this.bookmarks);
         
     }
@@ -138,6 +136,47 @@ class Bookmarker {
         this.fillBookmarksList(this.bookmarks);
     }
 
+    /*
+        PART 3 - Add a bookmark
+        -   Add the function addBookmark.  It has event as its parameter.
+            -   Because the textboxes for entering bookmark info are in a form, you will
+                need to prevent the form from being submitted (which is the default behavior)
+                like you prevented the delete link in ToDoList from going to a new page.  
+            -   get the url and the description from the form and create a bookmark object. 
+                Use the url for both the link and the title.  Leave the image blank.
+            -   add the new bookmark to the list
+            -   call fillBookmarksList
+            -   clear the form on the UI
+        -   Add a onsubmit handler to the form in the constructor.  
+            It should call addBookmark.  You must bind this to the class because this will be the form
+            when the submit handler is called if you don't.
+        END OF PART 3 - TEST AND DEBUG YOUR CODE
+    */
+    addBookmark(event) {
+        let submittedUrl = document.getElementById('url');                  // create a variable to point to the url HTML element
+        let bookmarkUrl = submittedUrl.value;                               // create a variable containing the text from url so that newBookmark can be created
+        let submittedDescript = document.getElementById('description');     // create a variable to point to the description HTML element
+        let bookmarkDescript = submittedDescript.value;                     // create a variable containing the text from description so that newBookmark can be created
+
+        let newBookmark = {
+            bookmarkDescript,
+            img: "",
+            bookmarkUrl,
+            bookmarkUrl
+        };
+
+        let parentDiv = document.getElementById('url').parentElement;       //creates variable to point to the HTML parent element
+
+        if (submittedDescript === '' || submittedUrl == '')
+            parentDiv.classList.add('has-error');                           // adds error class
+        else {
+            parentDiv.classList.remove('has-error');                        // removes error class
+            this.bookmarks.push(newBookmark);                               // pushes the bookmark into the bookmarks list
+            submittedUrl.value = '';                                        // clears the url text box for future task adding
+            submittedDescript.value = '';                                   // clears the description text box for future task adding
+            this.fillBookmarksList(this.bookmarks);                         // reloads the bookmarks list
+        }
+    }
 
 
 
@@ -147,36 +186,9 @@ class Bookmarker {
             the form.  See my screen shot and the styles in the css file to an idea.
     */
 
-    overlayOn() {
-        document.getElementById("overlay").style.display = "block";
-        document.write('I executed!');
-    }
-
-    overlayOff() {
-        document.getElementById("overlay").style.display = "none";
-    }
 }
 
-/*
 
-    PART 3 - Add a bookmark
-    -   Add the function addBookmark.  It has event as its parameter.
-        -   Because the textboxes for entering bookmark info are in a form, you will
-            need to prevent the form from being submitted (which is the default behavior)
-            like you prevented the delete link in ToDoList from going to a new page.  
-        -   get the url and the description from the form and create a bookmark object. 
-            Use the url for both the link and the title.  Leave the image blank.
-        -   add the new bookmark to the list
-        -   call fillBookmarksList
-        -   clear the form on the UI
-    -   Add a onsubmit handler to the form in the constructor.  
-        It should call addBookmark.  You must bind this to the class because this will be the form
-        when the submit handler is called if you don't.
-    END OF PART 3 - TEST AND DEBUG YOUR CODE
-
-    
-
-*/
 
 /*  THIS IS NECESSARY FOR TESTING ANY OF YOUR CODE
     declare a variable bookmarker

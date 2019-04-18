@@ -41,13 +41,15 @@
                 <h2>Bookmarker</h2>
 
                 <div class="floater content">
-                    <div class="form-group floater-top">
-                        <input type="text" placeholder="Bookmark URL" class="form-control" id="link" />
-                        <input type="text" placeholder="Bookmark Description" class="form-control" id="description" />
-                    </div>
-                    <div class="form-group floater-bottom">
-                        <button class="btn btn-primary" id="addBtn">Add</button>
-                    </div>
+                    <form class="bookmark-form">
+                        <div class="floater-top">
+                            <input id="url" type="text" placeholder="Bookmark URL" class="form-control">
+                            <input id="description" type="text" placeholder="Bookmark Description" class="form-control">
+                        </div>
+                        <div class="floater-bottom">
+                            <button type="submit" class="btn btn-primary btn-sm" id="submit">Add</button>
+                        </div>
+                    </form>
                 </div>
 
                 <div class="bookmarks-list content">
