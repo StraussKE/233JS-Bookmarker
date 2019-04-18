@@ -59,8 +59,13 @@ class Bookmarker {
             ]
         }
 
+        this.addBookmark.bind(this, event);
 
-        document.getElementById('submit').onsubmit = this.addBookmark.bind(this);
+        document.getElementById('myForm').onsubmit = this.addBookmark;
+        
+
+        
+
         this.fillBookmarksList(this.bookmarks);
         
     }
@@ -76,26 +81,50 @@ class Bookmarker {
             -   Return the template literal
     */
     generateBookmarkHtml(bookmark, index) {
-        return `
-            <li class="list-group-item">
-                <div class="row">
-                    <div class="col-md-2 col-xs-2 col-lg-2 col-sm-2 bookmark-img">
-                        <img src="images/bookmark.png" class="img-thumbnail" alt="Bookmark Image" />
-                </div>
-                <div class="col-md-9 col-xs-9 col-lg-9 col-sm-9">
-                    <div class="row bookmark-url">
-                        &bull; ${bookmark.link}
+        if (bookmark.image === "") {
+            return `
+                <li title=${bookmark.title} class="list-group-item">
+                    <div class="row">
+                        <div class="col-md-2 col-xs-2 col-lg-2 col-sm-2 bookmark-img">
+                            <img src="images/bookmark.png" class="img-thumbnail" alt="Bookmark Image" />
                     </div>
-                    <div class="row bookmark-descript">
-                        &bull; ${bookmark.description}
+                    <div class="col-md-9 col-xs-9 col-lg-9 col-sm-9">
+                        <div class="row bookmark-url">
+                            &bull; ${bookmark.link}
+                        </div>
+                        <div class="row bookmark-descript">
+                            &bull; ${bookmark.description}
+                        </div>
                     </div>
-                </div>
-                    <div class="col-md-1 col-xs-1 col-lg-1 col-sm-1 delete-icon-area">
-                        <a class="" href="/" onclick="bookmarkIt.deleteBookmark(event, ${index})"><i class="delete-icon glyphicon glyphicon-trash"></i></a>
+                        <div class="col-md-1 col-xs-1 col-lg-1 col-sm-1 delete-icon-area">
+                            <a class="" href="/" onclick="bookmarkIt.deleteBookmark(event, ${index})"><i class="delete-icon glyphicon glyphicon-trash"></i></a>
+                        </div>
                     </div>
-                </div>
-            </li>
-        `;
+                </li>
+            `;
+        }
+        else {
+            return `
+                <li title=${bookmark.title} class="list-group-item">
+                    <div class="row">
+                        <div class="col-md-2 col-xs-2 col-lg-2 col-sm-2 bookmark-img">
+                            <img src=${bookmark.image} class="img-thumbnail" alt="Bookmark Image" />
+                    </div>
+                    <div class="col-md-9 col-xs-9 col-lg-9 col-sm-9">
+                        <div class="row bookmark-url">
+                            &bull; ${bookmark.link}
+                        </div>
+                        <div class="row bookmark-descript">
+                            &bull; ${bookmark.description}
+                        </div>
+                    </div>
+                        <div class="col-md-1 col-xs-1 col-lg-1 col-sm-1 delete-icon-area">
+                            <a class="" href="/" onclick="bookmarkIt.deleteBookmark(event, ${index})"><i class="delete-icon glyphicon glyphicon-trash"></i></a>
+                        </div>
+                    </div>
+                </li>
+            `;
+        }
     }
     /*
         -   Add the fillBookmarksList method.  It has bookmarks as its parameter.
@@ -112,7 +141,7 @@ class Bookmarker {
     */
 
     fillBookmarksList(bookmarks) {
-        let bookmarksHtml = this.bookmarks.reduce(
+        let bookmarksHtml = bookmarks.reduce(
             (html, bookmark, index) => html += this.generateBookmarkHtml(bookmark, index), '');
         document.getElementById('bookmarkList').innerHTML = bookmarksHtml;
     }
@@ -153,28 +182,30 @@ class Bookmarker {
         END OF PART 3 - TEST AND DEBUG YOUR CODE
     */
     addBookmark(event) {
+        event.preventDefault();
         let submittedUrl = document.getElementById('url');                  // create a variable to point to the url HTML element
         let bookmarkUrl = submittedUrl.value;                               // create a variable containing the text from url so that newBookmark can be created
         let submittedDescript = document.getElementById('description');     // create a variable to point to the description HTML element
         let bookmarkDescript = submittedDescript.value;                     // create a variable containing the text from description so that newBookmark can be created
 
         let newBookmark = {
-            bookmarkDescript,
-            img: "",
-            bookmarkUrl,
-            bookmarkUrl
-        };
+            description: bookmarkDescript,
+            image: "",
+            link: bookmarkUrl,
+            title: bookmarkUrl
+        };      
 
         let parentDiv = document.getElementById('url').parentElement;       //creates variable to point to the HTML parent element
 
-        if (submittedDescript === '' || submittedUrl == '')
-            parentDiv.classList.add('has-error');                           // adds error class
-        else {
+        if (newBookmark.description == '' || newBookmark.link == '')
+            parentDiv.classList.add('has-error');
+        else { 
             parentDiv.classList.remove('has-error');                        // removes error class
             this.bookmarks.push(newBookmark);                               // pushes the bookmark into the bookmarks list
             submittedUrl.value = '';                                        // clears the url text box for future task adding
             submittedDescript.value = '';                                   // clears the description text box for future task adding
             this.fillBookmarksList(this.bookmarks);                         // reloads the bookmarks list
+            console.log("I did this");
         }
     }
 
