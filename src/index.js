@@ -63,9 +63,21 @@ class Bookmarker {
             ];
         }
 
-        window.onsubmit = () => { event.preventDefault(); this.addBookmark(event); } // this works, modeled off of the window.onload arrow
-                                                                                     // however this is also ugly because if I had two different forms
-                                                                                     // on my page this would route all submissions to the same place
+        /*
+            EXTRA CREDIT:
+            -   Do something on the page to draw attention to the form when you enter and leave
+                the form.  See my screen shot and the styles in the css file to an idea.
+        */
+
+        document.getElementById('floater-click').onclick = this.showFloater;
+        document.querySelector('.overlay').onclick = this.closeFloater;
+
+        window.onsubmit = () => {                                               // this works, modeled off of the window.onload arrow
+            event.preventDefault();                                             // prevents default form submission behavior
+            this.addBookmark(event);                                            // adds bookmark
+            this.closeFloater();                                                // closes overlay
+        }                                                                       // however this code is ugly because if I had two different forms
+                                                                                // on my page this would route all submissions to the same place
 
         this.addBookmark.bind(this, event);
         this.fillBookmarksList.bind(this, this.bookmarks);
@@ -73,6 +85,16 @@ class Bookmarker {
         //document.getElementById('myForm').onsubmit = this.addBookmark;        // I can't make this work to save my life.  I get errors with push
 
         this.fillBookmarksList(this.bookmarks);
+    }
+    
+    showFloater() {
+        document.body.classList.add("show-floater");
+    }
+
+    closeFloater() {
+        if (document.body.classList.contains("show-floater")) {
+            document.body.classList.remove("show-floater");
+        }
     }
     /*
 
@@ -212,14 +234,7 @@ class Bookmarker {
             submittedDescript.value = '';                                   // clears the description text box for future task adding
             this.fillBookmarksList(this.bookmarks);                         // reloads the bookmarks list
         }
-    }
-
-    /*
-        EXTRA CREDIT:
-        -   Do something on the page to draw attention to the form when you enter and leave
-            the form.  See my screen shot and the styles in the css file to an idea.
-    */
-
+    }   
 }
 
 /*  THIS IS NECESSARY FOR TESTING ANY OF YOUR CODE

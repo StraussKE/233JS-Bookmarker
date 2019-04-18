@@ -58,3 +58,7 @@ body.show-floater .overlay {
     padding: 4px 8px;
     font-size: 14px;
 }
+
+.has-error input[type=text] {
+    background-color: #FFCCCC;
+}
