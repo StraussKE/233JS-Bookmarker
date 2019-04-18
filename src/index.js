@@ -73,7 +73,6 @@ class Bookmarker {
         //document.getElementById('myForm').onsubmit = this.addBookmark;        // I can't make this work to save my life.  I get errors with push
 
         this.fillBookmarksList(this.bookmarks);
-        
     }
     /*
 
@@ -96,7 +95,7 @@ class Bookmarker {
                     </div>
                     <div class="col-md-9 col-xs-9 col-lg-9 col-sm-9">
                         <div class="row bookmark-url">
-                            &bull; ${bookmark.link}
+                            <a href="${bookmark.link}"> &bull; ${bookmark.link}</a>
                         </div>
                         <div class="row bookmark-descript">
                             &bull; ${bookmark.description}
