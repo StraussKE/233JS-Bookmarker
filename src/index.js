@@ -54,6 +54,12 @@ class Bookmarker {
                     link: "https://www.google.com/",
                     title: "https://www.google.com/"
                 },
+                {
+                    description: "Essential site for LCC CIT students",
+                    image: "",
+                    link: "https://www.classes.lanecc.edu",
+                    title: "https://www.classes.lanecc.edu"
+                },
             ];
         }
 
