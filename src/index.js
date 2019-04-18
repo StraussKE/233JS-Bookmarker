@@ -217,8 +217,6 @@ class Bookmarker {
 
 }
 
-
-
 /*  THIS IS NECESSARY FOR TESTING ANY OF YOUR CODE
     declare a variable bookmarker
     Add a window on load event handler that instantiates a Bookmarker object.  
