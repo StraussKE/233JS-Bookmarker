@@ -38,8 +38,6 @@ class Bookmarker {
             -   call the method fillBookmarksList and pass in the bookmarks
     */
     constructor() {
-        this.bookmarks;
-
         if (localStorage['bookmarks'])
             this.bookmarks = JSON.parse(localStorage['bookmarks']);
         else {
@@ -56,15 +54,17 @@ class Bookmarker {
                     link: "https://www.google.com/",
                     title: "https://www.google.com/"
                 },
-            ]
+            ];
         }
 
+        window.onsubmit = () => { event.preventDefault(); this.addBookmark(event); } // this works, modeled off of the window.onload arrow
+                                                                                     // however this is also ugly because if I had two different forms
+                                                                                     // on my page this would route all submissions to the same place
+
         this.addBookmark.bind(this, event);
+        this.fillBookmarksList.bind(this, this.bookmarks);
 
-        document.getElementById('myForm').onsubmit = this.addBookmark;
-        
-
-        
+        //document.getElementById('myForm').onsubmit = this.addBookmark;        // I can't make this work to save my life.  I get errors with push
 
         this.fillBookmarksList(this.bookmarks);
         
@@ -184,20 +184,21 @@ class Bookmarker {
     addBookmark(event) {
         event.preventDefault();
         let submittedUrl = document.getElementById('url');                  // create a variable to point to the url HTML element
-        let bookmarkUrl = submittedUrl.value;                               // create a variable containing the text from url so that newBookmark can be created
+        let link = submittedUrl.value;                               // create a variable containing the text from url so that newBookmark can be created
+        let title = link;
         let submittedDescript = document.getElementById('description');     // create a variable to point to the description HTML element
-        let bookmarkDescript = submittedDescript.value;                     // create a variable containing the text from description so that newBookmark can be created
+        let description = submittedDescript.value;                     // create a variable containing the text from description so that newBookmark can be created
 
         let newBookmark = {
-            description: bookmarkDescript,
+            description,
             image: "",
-            link: bookmarkUrl,
-            title: bookmarkUrl
-        };      
+            link,
+            title
+        };
 
         let parentDiv = document.getElementById('url').parentElement;       //creates variable to point to the HTML parent element
 
-        if (newBookmark.description == '' || newBookmark.link == '')
+        if (description == '' || link == '')
             parentDiv.classList.add('has-error');
         else { 
             parentDiv.classList.remove('has-error');                        // removes error class
@@ -205,11 +206,8 @@ class Bookmarker {
             submittedUrl.value = '';                                        // clears the url text box for future task adding
             submittedDescript.value = '';                                   // clears the description text box for future task adding
             this.fillBookmarksList(this.bookmarks);                         // reloads the bookmarks list
-            console.log("I did this");
         }
     }
-
-
 
     /*
         EXTRA CREDIT:
