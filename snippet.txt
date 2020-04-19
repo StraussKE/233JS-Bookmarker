@@ -1,0 +1,28 @@
+The url with my api key
+https://opengraph.io/api/1.1/site/http%3A%2F%2Fgoogle.com?app_id=c9007a07-a942-47f3-8d86-97b4f807c5e6
+
+The instance variables for the url and my api key
+this.apiUrl        = 'https://opengraph.io/api/1.1/site';
+this.appId         = 'c9007a07-a942-47f3-8d86-97b4f807c5e6'; 
+
+The call to fetch
+const url = encodeURIComponent(this.bookmarkUrl.value);
+const urlForHref = this.bookmarkUrl.value;
+const description = this.bookmarkDesc.value;
+fetch(`${this.apiUrl}/${url}?app_id=${this.appId}`)
+    .then(response => response.json())
+    .then(data => { 
+        const bookmark = {
+            title: data.hybridGraph.title,
+            image: data.hybridGraph.image,
+            link: urlForHref,
+            description: description
+        };
+        this.bookmarks.push(bookmark);
+        this.fillBookmarksList(this.bookmarks);
+        this.storeBookmarks(this.bookmarks);
+        this.bookmarkForm.reset();
+    })
+    .catch(error => {
+        alert('There was a problem getting info!'); 
+    });

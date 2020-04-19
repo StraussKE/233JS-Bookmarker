@@ -209,45 +209,54 @@ class Bookmarker {
             when the submit handler is called if you don't.
         END OF PART 3 - TEST AND DEBUG YOUR CODE
     */
+    this.apiUrl = 'https://opengraph.io/api.1.1/site';
+    this.appId = 'c9007a07-a942-47f3-8d86-97b4f807c5e6'
+
     addBookmark(event) {
         event.preventDefault();
-        let submittedUrl = document.getElementById('url');                  // create a variable to point to the url HTML element
-        let link = submittedUrl.value;                                      // create a variable containing the text from url so that newBookmark can be created
-        let title = link;
-        let submittedDescript = document.getElementById('description');     // create a variable to point to the description HTML element
-        let description = submittedDescript.value;                          // create a variable containing the text from description so that newBookmark can be created
+        let submittedUrl = encodeURIComponent(this.bookmarkUrl.value);                  // create a variable to point to the url HTML element
+        let link = this.bookmarkUrl.value;                                      // create a variable containing the text from url so that newBookmark can be created
 
-        let newBookmark = {
-            description,
-            image: "",
-            link,
-            title
-        };
+        let submittedDescript = this.bookmarkDesc.value;     // create a variable to point to the description HTML element
+        let description = submittedDescript.value;
 
-        let linkParentDiv = document.getElementById('url').parentElement;   // creates variable to point to the HTML parent element
-        let descParentDiv = document.getElementById('description').parentElement;
+        fetch(`${this.apiUrl}/${url}?app_id=${this.appId}`)
+            .then(response => response.json())
+            .then(data => {
+                let newBookmark = {
+                    title: data.hybridGraph.title,
+                    image: data.hybridGraph.image,
+                    link,
+                    description
+                };
 
-        if (link == '') {                                                   // if link is empty  
-            linkParentDiv.classList.add('has-error-url');                   // throw error flag
-            if (description == '') {                                        // test if description is also empty
-                descParentDiv.classList.add('has-error-desc');              // if empty, throw second error flag
-            }
-            else {                                                          // otherwise clear any previously thrown error flag on description
-                descParentDiv.classList.remove('has-error-desc');
-            }
-        } else if (description == '') {                                     // test description if link wasn't empty, treat appropriately
-            descParentDiv.classList.add('has-error-desc');
-            linkParentDiv.classList.remove('has-error-url');                // make sure link has no error flag since it passed its test
-            console.log('I executed');
-        } else { 
-            descParentDiv.classList.remove('has-error-desc');               // remove description error flag
-            linkParentDiv.classList.remove('has-error-url');                // remove link error flag
+                let linkParentDiv = document.getElementById('url').parentElement;   // creates variable to point to the HTML parent element
+                let descParentDiv = document.getElementById('description').parentElement;
 
-            this.bookmarks.push(newBookmark);                               // pushes the bookmark into the bookmarks list
-            submittedUrl.value = '';                                        // clears the url text box for future task adding
-            submittedDescript.value = '';                                   // clears the description text box for future task adding
-            this.fillBookmarksList(this.bookmarks);                         // reloads the bookmarks list
-        }
+                if (link == '') {                                                   // if link is empty  
+                    linkParentDiv.classList.add('has-error-url');                   // throw error flag
+                    if (description == '') {                                        // test if description is also empty
+                        descParentDiv.classList.add('has-error-desc');              // if empty, throw second error flag
+                    }
+                    else {                                                          // otherwise clear any previously thrown error flag on description
+                        descParentDiv.classList.remove('has-error-desc');
+                    }
+                } else if (description == '') {                                     // test description if link wasn't empty, treat appropriately
+                    descParentDiv.classList.add('has-error-desc');
+                    linkParentDiv.classList.remove('has-error-url');                // make sure link has no error flag since it passed its test
+                    console.log('I executed');
+                } else {
+                    descParentDiv.classList.remove('has-error-desc');               // remove description error flag
+                    linkParentDiv.classList.remove('has-error-url');                // remove link error flag
+
+                    this.bookmarks.push(newBookmark);                               // pushes the bookmark into the bookmarks list
+                    submittedUrl.value = '';                                        // clears the url text box for future task adding
+                    submittedDescript.value = '';                                   // clears the description text box for future task adding
+                    this.fillBookmarksList(this.bookmarks);                         // reloads the bookmarks list
+                }
+            }).catch(error => {
+                console.log("There was a problem getting info!");
+            });
     }   
 }
 
