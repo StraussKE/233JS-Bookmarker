@@ -38,6 +38,9 @@ class Bookmarker {
             -   call the method fillBookmarksList and pass in the bookmarks
     */
     constructor() {
+        this.apiUrl = 'https://opengraph.io/api/1.1/site';
+        this.appId = 'c9007a07-a942-47f3-8d86-97b4f807c5e6'; 
+
         if (localStorage['bookmarks'])
             this.bookmarks = JSON.parse(localStorage['bookmarks']);
         else {
@@ -209,16 +212,14 @@ class Bookmarker {
             when the submit handler is called if you don't.
         END OF PART 3 - TEST AND DEBUG YOUR CODE
     */
-    this.apiUrl = 'https://opengraph.io/api.1.1/site';
-    this.appId = 'c9007a07-a942-47f3-8d86-97b4f807c5e6'
-
     addBookmark(event) {
         event.preventDefault();
-        let submittedUrl = encodeURIComponent(this.bookmarkUrl.value);                  // create a variable to point to the url HTML element
-        let link = this.bookmarkUrl.value;                                      // create a variable containing the text from url so that newBookmark can be created
+        let submittedUrl = document.getElementById('url');                  // create a variable to point to the url HTML element
+        let link = submittedUrl.value;                                      // create a variable containing the text from url so that newBookmark can be created
+        let url = encodeURIComponent(link)
 
-        let submittedDescript = this.bookmarkDesc.value;     // create a variable to point to the description HTML element
-        let description = submittedDescript.value;
+        let submittedDescript = document.getElementById('description');     // create a variable to point to the description HTML element
+        let description = submittedDescript.value;                          // create a variable containing the text from description so that newBookmark can be created
 
         fetch(`${this.apiUrl}/${url}?app_id=${this.appId}`)
             .then(response => response.json())
@@ -248,14 +249,14 @@ class Bookmarker {
                 } else {
                     descParentDiv.classList.remove('has-error-desc');               // remove description error flag
                     linkParentDiv.classList.remove('has-error-url');                // remove link error flag
-
-                    this.bookmarks.push(newBookmark);                               // pushes the bookmark into the bookmarks list
-                    submittedUrl.value = '';                                        // clears the url text box for future task adding
-                    submittedDescript.value = '';                                   // clears the description text box for future task adding
-                    this.fillBookmarksList(this.bookmarks);                         // reloads the bookmarks list
                 }
-            }).catch(error => {
-                console.log("There was a problem getting info!");
+                this.bookmarks.push(newBookmark);                               // pushes the bookmark into the bookmarks list
+                submittedUrl.value = '';                                        // clears the url text box for future task adding
+                submittedDescript.value = '';                                   // clears the description text box for future task adding
+                this.fillBookmarksList(this.bookmarks);                         // reloads the bookmarks list
+                })
+            .catch(error => {
+                alert('There was a problem getting info!');
             });
     }   
 }
